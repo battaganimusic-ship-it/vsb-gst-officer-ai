@@ -239,7 +239,21 @@ def case_summary(case_id):
     case = Case.query.filter_by(id=case_id, user_id=session["user_id"]).first_or_404()
     docs = Document.query.filter_by(case_id=case.id).all()
     return render_template("case_summary.html", case=case, docs=docs)
+@app.route("/case/<int:case_id>/analysis")
+@login_required
+def analysis(case_id):
+    case = Case.query.filter_by(
+        id=case_id,
+        user_id=session["user_id"]
+    ).first_or_404()
 
+    docs = Document.query.filter_by(case_id=case.id).all()
+
+    return render_template(
+        "analysis.html",
+        case=case,
+        docs=docs
+    )
 @app.route("/health")
 def health():
     return jsonify({"status":"ok","product":"VSB GST Officer AI"})
