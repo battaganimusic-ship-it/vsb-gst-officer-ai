@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: vsb-gst-officer-ai
+    env: docker
+    plan: starter
+    autoDeploy: true
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: vsb-gst-db
+          property: connectionString
+
+databases:
+  - name: vsb-gst-db
+    plan: basic-256mb
