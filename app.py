@@ -9,7 +9,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = BASE_DIR / "uploads"
-UPLOAD_DIR.mkdir(exist_ok=True)
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+INSTANCE_DIR = BASE_DIR / "instance"
+INSTANCE_DIR.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "change-me-in-production")
@@ -18,7 +20,7 @@ database_url = os.getenv("DATABASE_URL")
 if database_url and database_url.startswith("postgres://"):
     database_url = database_url.replace("postgres://", "postgresql://", 1)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = database_url or f"sqlite:///{BASE_DIR/'instance'/'gst_ai.db'}"
+app.config["SQLALCHEMY_DATABASE_URI"] = database_url or f"sqlite:///{INSTANCE_DIR/'gst_ai.db'}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024 * 1024  # 1 GB per request
 
